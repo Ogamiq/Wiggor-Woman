@@ -22,12 +22,12 @@ router.post('/login', function(req, res){
       res.status(400)
         .json(err);
     }
-
      if(user) {
       if (bcrypt.compareSync(password, user.password)){
-        jwt.sign({ id: user._id, name: user.name }, 'shhhhh', (err, token) => {
+        jwt.sign({ id: user._id, name: user.name }, 'shhhhh', { expiresIn: '900000s' },  (err, token) => {
         res.status(200)
           .json({token})
+          console.log(token);
         });
     }
     else {
