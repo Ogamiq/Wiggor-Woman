@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 var User = require('../models/user.js');
 var User = mongoose.model('User');
 const jwt = require('jsonwebtoken');
-//TODO: import also a KZW event from models catalogue
 
 
 router.post('/login', function(req, res){
