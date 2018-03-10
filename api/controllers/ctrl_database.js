@@ -1,7 +1,8 @@
+const CONFIG = require("../data/config");
 const mongoose = require('mongoose');
 
 module.exports.connect_to_the_database = () => {
-  mongoose.connect('mongodb://Ogamiq:kzwPower123@ds046677.mlab.com:46677/kzwdb');
+  mongoose.connect(CONFIG.DB_URL);
   mongoose.connection.once('open', function() {
     console.log('Database connected');
   }).on('error', function(error) {

@@ -8,7 +8,7 @@ const CONFIG = {
         PASSWORD: "kzwPower123",
         USER: "Ogamiq",
     },
-    JWT_SECRET: ((IS_PROD) ? process.env.JWT_SECRET : 'shhhhh'
+    HASH_PASSWORD_SECRET: ((IS_PROD) ? process.env.HASH_PASSWORD_SECRET : 'shhhhh')
 };
 
 module.exports = CONFIG;
