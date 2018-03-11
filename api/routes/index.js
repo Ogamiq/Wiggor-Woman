@@ -74,7 +74,10 @@ router.post('/register', function(req, res){
               console.log(err);
               return;
             } else {
-            res.redirect('/login');
+              res
+                 .json(result)
+                 //TODO: redirect to the login view when it's made. 
+                 //.redirect('../public/login.html');
           }
         })
       });
