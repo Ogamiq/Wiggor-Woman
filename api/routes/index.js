@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 var User = require('../models/user.js');
 var User = mongoose.model('User');
 const jwt = require('jsonwebtoken');
-//TODO: import also a KZW event from models catalogue
+const CONFIG = require('../data/config.js');
 
 
 router.post('/login', function(req, res){
@@ -24,7 +24,7 @@ router.post('/login', function(req, res){
     }
      if(user) {
       if (bcrypt.compareSync(password, user.password)){
-        jwt.sign({ id: user._id, name: user.name }, 'shhhhh', { expiresIn: '900000s' },  (err, token) => {
+        jwt.sign({ id: user._id, name: user.name }, CONFIG.HASH_PASSWORD_SECRET, { expiresIn: '900000s' },  (err, token) => {
         res.status(200)
           .json({token})
           console.log(token);

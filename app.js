@@ -1,10 +1,11 @@
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
-var path = require('path');
-var passport = require('passport');
-var mongoose = require('mongoose');
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const path = require('path');
+const passport = require('passport');
+const mongoose = require('mongoose');
 const expressValidator = require('express-validator');
+const ctrl_database = require('./api/controllers/ctrl_database');
 
 var routes = require('./api/routes');
 var routesEvent = require('./api/routes/eventRouter');
@@ -18,12 +19,7 @@ app.use('/api', routes);
 app.use('/api', routesEvent);
 
 //connect to the database
-mongoose.connect('mongodb://Ogamiq:kzwPower123@ds046677.mlab.com:46677/kzwdb');
-mongoose.connection.once('open', function() {
-  console.log('Database connected');
-}).on('error', function(error) {
-  console.log('Connection error:', error);
-});
+ctrl_database.connect_to_the_database();
 
 app.listen(3000,function(){
     console.log("Server started on 3000");
