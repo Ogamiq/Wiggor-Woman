@@ -14,6 +14,10 @@ router.post('/login', function(req, res){
   var email = req.body.email;
   var password = req.body.password;
 
+  req.checkBody('email', 'Email is required').notEmpty();
+  req.checkBody('email', 'Email is not valid').isEmail();
+  req.checkBody('password', 'Password is required').notEmpty();  
+
   User.findOne({
     email
   }).exec(function(err, user){
@@ -42,7 +46,7 @@ router.post('/login', function(req, res){
 });
 
 router.post('/register', function(req, res){
-  var name = req.body.name || null;
+  var name = req.body.name;
   var email = req.body.email;
   var password = req.body.password;
   var password2 = req.body.password2;
@@ -76,7 +80,7 @@ router.post('/register', function(req, res){
             } else {
               res
                  .json(result)
-                 //TODO: redirect to the login view when it's made. 
+                 //TODO: redirect to the login view when it's made.
                  //.redirect('../public/login.html');
           }
         })
