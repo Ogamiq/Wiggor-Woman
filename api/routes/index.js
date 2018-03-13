@@ -16,7 +16,7 @@ router.post('/login', function(req, res){
 
   req.checkBody('email', 'Email is required').notEmpty();
   req.checkBody('email', 'Email is not valid').isEmail();
-  req.checkBody('password', 'Password is required').notEmpty();  
+  req.checkBody('password', 'Password is required').notEmpty();
 
   User.findOne({
     email
