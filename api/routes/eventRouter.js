@@ -30,7 +30,7 @@ router.get('/event', function(req, res){
       });
     });
 
-router.post('/event',ctrl_users.verify_token, (req, res) => {
+router.post('/event',/*ctrl_users.verify_token,*/ (req, res) => {
   let name = req.body.name;
   let room = req.body.room;
   let speaker= req.body.speaker;
@@ -40,6 +40,7 @@ router.post('/event',ctrl_users.verify_token, (req, res) => {
   let description = req.body.description;
   let pplLimit = req.body.ppLimit;
   let pplRegistered = req.body.pplRegistered;
+  let participants = req.body.participants;
 
   req.checkBody('name', 'Name is required').notEmpty().optional();
   req.checkBody('room', 'Room is required').notEmpty().optional();;
@@ -50,6 +51,7 @@ router.post('/event',ctrl_users.verify_token, (req, res) => {
   req.checkBody('description', ' is required').notEmpty().optional();
   req.checkBody('ppLimit', 'Name is required').toInt().optional();
   req.checkBody('pplRegistered', 'Room is required').toInt().optional();
+  req.checkBody('participants', '').optional();
 
   let errors = req.validationErrors();
   if (errors){
@@ -67,6 +69,7 @@ router.post('/event',ctrl_users.verify_token, (req, res) => {
     description,
     pplLimit,
     pplRegistered,
+    participants
   });
   newEvent.save((err, result) => {
     res.status(200).json({success:true, result})
@@ -74,7 +77,7 @@ router.post('/event',ctrl_users.verify_token, (req, res) => {
 }
 });
 
-router.put('/event/:id',ctrl_users.verify_token, function(req, res){
+router.put('/event/:id',/*ctrl_users.verify_token, */function(req, res){
   const id = req.params.id;
       console.log('GET eventlId', id);
       Event
@@ -100,15 +103,16 @@ router.put('/event/:id',ctrl_users.verify_token, function(req, res){
           res.status(response.status)
             .json(response.message);
         } else {
-           req.checkBody('name', 'Name is required').notEmpty().optional();
-           req.checkBody('room', 'Room is required').notEmpty().optional();;
-           req.checkBody('speacker', 'Speacker is not valid').notEmpty().optional();
-           req.checkBody('building', ' is required').notEmpty().optional();
-           req.checkBody('date', 'Date is required').notEmpty().optional();
-           req.checkBody('hour', 'Hour is required').notEmpty().optional();
-           req.checkBody('description', ' is required').notEmpty().optional();
+           req.checkBody('name', 'Name is required').optional();
+           req.checkBody('room', 'Room is required').optional();;
+           req.checkBody('speacker', 'Speacker is not valid').optional();
+           req.checkBody('building', ' is required').optional();
+           req.checkBody('date', 'Date is required').optional();
+           req.checkBody('hour', 'Hour is required').optional();
+           req.checkBody('description', ' is required').optional();
            req.checkBody('ppLimit', 'Name is required').toInt().optional();
            req.checkBody('pplRegistered', 'Room is required').toInt().optional();
+           req.checkBody('participants', '').optional();
 
            let errors = req.validationErrors();
            if (errors){
@@ -158,5 +162,9 @@ router.delete('/event/:EventId', (req, res) => {
         }
       });
   });
+
+  
+
+
 
 module.exports = router;

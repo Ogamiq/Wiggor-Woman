@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
+const UserSchema = require('./user.js');
 const kzwEventSchema = new Schema({
   //TODO: change name, room and description to required
   name: String,
@@ -11,8 +11,8 @@ const kzwEventSchema = new Schema({
   hour: String,
   description: String,
   pplLimit: Number,
-  pplRegistered: Number
-  //participants: [Schema.Types.ObjectId]
+  pplRegistered: Number,
+  participants: [UserSchema]
 });
 
 const kzw_event = mongoose.model('kzw_events',kzwEventSchema, 'kzw_events');
