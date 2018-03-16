@@ -35,7 +35,7 @@ const kzwEventSchema = new Schema({
   pplRegistered: {
     type:Number,
     required:true
-  }
+  },
   participants: [UserSchema]
 });
 

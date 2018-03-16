@@ -28,13 +28,13 @@ router.get('/getAllparticipants/:EventId', function(req, res){
                   .json(doc);
               }});
 });
+
 //adds a user to the array of participants of a particular event
 router.post('/event_subscribe/:eventID/:userID', function(req, res){
 
   const eventID = req.params.eventID;
   const userID = req.params.userID;
-
-   User
+  User
      .findById(userID)
      .exec(function(err, user){
       if (err){
@@ -49,51 +49,27 @@ router.post('/event_subscribe/:eventID/:userID', function(req, res){
               console.log(err);
               res.status(400).json("couldn't find the event by its id");
             }
-            else {
-              res.status(200)
-              .json({success:true,message:"found user and event by their ids"});
-            }
+             if (event && !event.participants.find((element) => element.name===user.name)){
+                 event.participants.push({
+                    name: user.name,
+                    surname:user.surname,
+                    university:user.university,
+                    year_of_study:user.year_of_study,
+                    email:user.email,
+                    password:user.password
+               });
+            event.save((err, evUpdated)=>{
+              if(err){
+                console.log(err);
+                res.status(500).json(err);
+              } else {
+                res.status(200).json(evUpdated.participants[evUpdated.participants.length-1]);
+              }
             });
-
-
-
-//
-//     else {
-//       Event
-//           .findById(id)
-//           .exec(function(err, ev){
-//             if (err){
-//               console.log("Internal Server Error");
-//               res.status(500)
-//                  .json(err);
-//             }
-//             else if (!ev) {
-//                console.log("Error finding event 404");
-//                res.status(404).json({success:false, message: "Event ID is not found in database "});
-//              }
-//              if (ev && ev.participants.find((element) => element.name===name)!=='undefined'){
-//                console.log(ev);
-//                ev.participants.push({
-//                   name: name,
-//                   surname:surname,
-//                   university:university,
-//                   year_of_study:year_of_study,
-//                   email:email,
-//                   password:password
-//                 });
-//              ev.save((err, evUpdated)=>{
-//                if(err){
-//                  console.log(err);
-//                  res.status(500).json(err);
-//                } else {
-//                  res.status(200).json(evUpdated.participants[evUpdated.participants.length-1]);
-//                }
-//              });
-//           } else {
-//             res.status(404).json('You have been already signed for this event!');
-//           }
-//        });
-//  }
+            }else {
+              res.status(404).json('You have been already signed for this event!');
+            }
+          });
       }
     })
 });
