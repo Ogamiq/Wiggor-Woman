@@ -44,14 +44,20 @@ router.post('/login', function(req, res){
  }
 });
 });
-
+// #19 disallow user to register more than once using the same email.
 router.post('/register', function(req, res){
   var name = req.body.name;
+  var surname = req.body.surname;
+  var university = req.body.university;
+  var year_of_study = req.body.year_of_study;
   var email = req.body.email;
   var password = req.body.password;
   var password2 = req.body.password2;
 
   req.checkBody('name', 'Name is required').notEmpty();
+  req.checkBody('surname', 'Surname is required').notEmpty();
+  req.checkBody('university').notEmpty();
+  req.checkBody('year_of_study').notEmpty();
   req.checkBody('email', 'Email is required').notEmpty();
   req.checkBody('email', 'Email is not valid').isEmail();
   req.checkBody('password', 'Password is required').notEmpty();
@@ -63,6 +69,19 @@ router.post('/register', function(req, res){
     res.status(500)
       .json(errors);
   } else {
+   User.findOne({
+    email:email
+  }).exec(function(err, user){
+    if (err){
+      console.log(err);
+      res.status(400)
+        .json('You are not registered!');
+    }
+     if(user) {
+       console.log(user);
+       res.status(404)
+       .json('You have already been registered!');
+  } if (!user){
     bcrypt.genSalt(10, function(err, salt){
       bcrypt.hash(password, salt, function(error, hash){
         if(err){
@@ -70,8 +89,11 @@ router.post('/register', function(req, res){
           }
           let newUser = new User({
           name,
+          surname,
+          university,
+          year_of_study,
           email,
-          password:hash,
+          password:hash
           });
           newUser.save(function(err, result){
             if(error){
@@ -83,9 +105,11 @@ router.post('/register', function(req, res){
                  //TODO: redirect to the login view when it's made.
                  //.redirect('../public/login.html');
           }
-        })
-      });
-    })
+        });
+      })
+    });
+  }
+});
   }
 });
 module.exports = router;

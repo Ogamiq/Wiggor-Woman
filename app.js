@@ -9,6 +9,7 @@ const ctrl_database = require('./api/controllers/ctrl_database');
 
 var routes = require('./api/routes');
 var routesEvent = require('./api/routes/eventRouter');
+var routesSubscribeEvent = require('./api/routes/eventSubscribeRouter');
 app.use(bodyParser.json())
 
 app.use(expressValidator());
@@ -17,6 +18,8 @@ app.use('/', express.static(__dirname + '/public'));
 //next routes will be  with '/api' part: /api/register and so on...
 app.use('/api', routes);
 app.use('/api', routesEvent);
+app.use('/api', routesSubscribeEvent);
+
 
 //connect to the database
 ctrl_database.connect_to_the_database();

@@ -42,16 +42,17 @@ router.post('/event',/*ctrl_users.verify_token,*/ (req, res) => {
   let pplRegistered = req.body.pplRegistered;
   let participants = req.body.participants;
 
-  req.checkBody('name', 'Name is required').notEmpty().optional();
-  req.checkBody('room', 'Room is required').notEmpty().optional();;
-  req.checkBody('speacker', 'Speacker is not valid').notEmpty().optional();
-  req.checkBody('building', ' is required').notEmpty().optional();
-  req.checkBody('date', 'Date is required').notEmpty().optional();
-  req.checkBody('hour', 'Hour is required').notEmpty().optional();
-  req.checkBody('description', ' is required').notEmpty().optional();
-  req.checkBody('ppLimit', 'Name is required').toInt().optional();
-  req.checkBody('pplRegistered', 'Room is required').toInt().optional();
-  req.checkBody('participants', '').optional();
+//req.checkBody('name', 'Name is required').notEmpty();
+  req.checkBody('name').notEmpty();
+  req.checkBody('room').optional();;
+  req.checkBody('speaker').optional();
+  req.checkBody('building').notEmpty();
+  req.checkBody('date').notEmpty();
+  req.checkBody('hour').notEmpty();
+  req.checkBody('description').notEmpty();
+  req.checkBody('ppLimit').toInt().notEmpty();
+  req.checkBody('pplRegistered').toInt().notEmpty();
+  req.checkBody('participants').optional();
 
   let errors = req.validationErrors();
   if (errors){
@@ -69,79 +70,58 @@ router.post('/event',/*ctrl_users.verify_token,*/ (req, res) => {
     description,
     pplLimit,
     pplRegistered,
-    participants
+    participants,
   });
   newEvent.save((err, result) => {
-    res.status(200).json({success:true, result})
+    console.log(result);
+    res.status(200)
+       .json({success:true, result})
   })
 }
 });
 
 router.put('/event/:id',/*ctrl_users.verify_token, */function(req, res){
   const id = req.params.id;
-      console.log('GET eventlId', id);
-      Event
-      .findById(id)
-      //.select("-participants")
-      .exec(function(err, doc){
-        var response = {
-          status : 200,
-          message : doc
-        };
-        if (err) {
-          console.log("Error finding event");
-          response.status = 500;
-          response.message = err;
-        } else if(!doc) {
-          console.log("EventId not found in database", id);
-          response.status = 404;
-          response.message = {
-            "message" : "Event ID not found " + id
-          };
-        }
-        if(response.status!==200){
-          res.status(response.status)
-            .json(response.message);
-        } else {
-           req.checkBody('name', 'Name is required').optional();
-           req.checkBody('room', 'Room is required').optional();;
-           req.checkBody('speacker', 'Speacker is not valid').optional();
-           req.checkBody('building', ' is required').optional();
-           req.checkBody('date', 'Date is required').optional();
-           req.checkBody('hour', 'Hour is required').optional();
-           req.checkBody('description', ' is required').optional();
-           req.checkBody('ppLimit', 'Name is required').toInt().optional();
-           req.checkBody('pplRegistered', 'Room is required').toInt().optional();
-           req.checkBody('participants', '').optional();
+  req.checkBody('name').optional();
+  req.checkBody('room').optional();;
+  req.checkBody('speaker').optional();
+  req.checkBody('building').optional();
+  req.checkBody('date').optional();
+  req.checkBody('hour').optional();
+  req.checkBody('description').optional();
+  req.checkBody('ppLimit').toInt().optional(); //do not use mental shortcuts peopleLimit
+  req.checkBody('pplRegistered').toInt().optional();
+  req.checkBody('participants').optional();
 
-           let errors = req.validationErrors();
-           if (errors){
-             console.log(errors);
-             res.status(500)
-               .json(errors);
-           } else {
-            doc.name = req.body.name;
-            doc.room =req.body.room;
-            doc.speacker = req.body.speacker;
-            doc.building=req.body.building;
-            doc.date = req.body.date;
-            doc.hour= req.body.hour;
-            doc.description = req.body.description;
-            doc.ppLimit= req.body.ppLimit;
-            doc.pplRegistered = req.body.pplRegistered;
-            doc.participants = req.body.participants;
-            doc.save(function(err, eventUpdated){
-              if (err){
-                res.status(500)
-                   .json(err);
-              }else{
-                console.log(eventUpdated);
-                res.status(200)
-                   .json(eventUpdated);
-              }
-          });
-      }}
-    });
+  let errors = req.validationErrors();
+  if (errors){
+    console.log(errors);
+    res.status(500)
+      .json(errors);
+  } else { //here I will create new object with optional fields,,,, hmm this situation you can solve in many ways, I will show you 1:)
+
+    let fieldsToChange = {};
+    if(req.body.name) fieldsToChange.name = req.body.name;
+    if(req.body.room) fieldsToChange.room = req.body.room;
+    if(req.body.speaker) fieldsToChange.speaker = req.body.speaker;
+    if(req.body.building) fieldsToChange.building = req.body.building;
+    if(req.body.date) fieldsToChange.date = req.body.date;
+    if(req.body.hour) fieldsToChange.hour = req.body.hour;
+    if(req.body.description) fieldsToChange.description = req.body.description;
+    if(req.body.pplLimit) fieldsToChange.pplLimit = req.body.pplLimit;
+    if(req.body.pplRegistered) fieldsToChange.pplRegistered = req.body.pplRegistered;
+    if(req.body.participants) fieldsToChange.participants - req.body.participants;
+    console.log(fieldsToChange);
+    Event.findByIdAndUpdate(id, {
+      $set: fieldsToChange
+    }, (err, result) => {
+      if(err) {
+        res.status(400).json({ success: false, error: err})
+      } else {
+        res.status(200).json({ success: true, result})
+      }
+    })
+  }
 });
 
 router.delete('/event/:EventId', (req, res) => {
@@ -162,9 +142,5 @@ router.delete('/event/:EventId', (req, res) => {
         }
       });
   });
-
-  
-
-
 
 module.exports = router;
