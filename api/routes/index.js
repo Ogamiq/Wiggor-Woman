@@ -53,6 +53,7 @@ router.post('/register', function(req, res){
   var email = req.body.email;
   var password = req.body.password;
   var password2 = req.body.password2;
+  var isAdmin=req.body.isAdmin;
 
   req.checkBody('name', 'Name is required').notEmpty();
   req.checkBody('surname', 'Surname is required').notEmpty();
@@ -62,6 +63,7 @@ router.post('/register', function(req, res){
   req.checkBody('email', 'Email is not valid').isEmail();
   req.checkBody('password', 'Password is required').notEmpty();
   req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+  req.checkBody('isAdmin').optional();
 
   let errors = req.validationErrors();
   if (errors){
