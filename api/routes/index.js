@@ -114,4 +114,52 @@ router.post('/register', function(req, res){
 });
   }
 });
+
+router.put('/register', function(req,res){
+
+const email=req.body.email;
+const isAdmin=req.body.isAdmin;
+console.log(isAdmin);
+User.findOneAndUpdate({
+  email:email
+}, {
+  $set:{
+    "isAdmin":isAdmin
+  }
+}, (err, result)=>{
+  if(err) {
+    res.status(400).json({ success: false, error: err})
+  } else {
+    res.status(200).json({ success: true, result})
+  }
+ }
+)})
+
+
+
+
+/*Event.findByIdAndUpdate(id, {
+  $set: fieldsToChange
+}, (err, result) => {
+  if(err) {
+    res.status(400).json({ success: false, error: err})
+  } else {
+    res.status(200).json({ success: true, result})
+  }
+})*/
+
+
+
+
+
+
+
+
+
+
+
+
+/*})*/
+
+
 module.exports = router;
