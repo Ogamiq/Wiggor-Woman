@@ -21,6 +21,7 @@ module.exports.verify_token = (req,res,next) => {
 
     try {
       const decoded = jwt.verify(req.token, CONFIG.HASH_PASSWORD_SECRET);
+      console.log(decoded);
       next();
     } catch(err) {
       res.sendStatus(403);

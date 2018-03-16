@@ -30,11 +30,11 @@ const kzwEventSchema = new Schema({
   description:String,
   pplLimit: {
     type: Number,
-    required: true
+    //required: true
   },
   pplRegistered: {
     type:Number,
-    required:true
+    //required:true
   },
   participants: [UserSchema]
 });
