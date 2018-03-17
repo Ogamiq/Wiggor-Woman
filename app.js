@@ -8,7 +8,7 @@ const expressValidator = require('express-validator');
 const databaseController = require('./api/controllers/databaseController');
 const tokenController = require('./api/controllers/tokenController');
 
-const routesLoginRegister = require('./api/routes/index');
+const routesLoginRegister = require('./api/routes/');
 const routesCRUDevent = require('./api/routes/eventRouter');
 const routesSubscribeEvent = require('./api/routes/eventSubscribeRouter');
 app.use(bodyParser.json())

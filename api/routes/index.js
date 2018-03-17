@@ -30,7 +30,7 @@ router.post('/login', function(req, res){
       if (bcrypt.compareSync(password, user.password)){
         jwt.sign({ id: user._id, name: user.name }, CONFIG.HASH_PASSWORD_SECRET, { expiresIn: '900000s' },  (err, token) => {
         res.status(200)
-          .json({token},{user})
+          .json({user,token})
           console.log(token);
         });
     }
