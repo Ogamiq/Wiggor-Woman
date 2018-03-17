@@ -30,7 +30,7 @@ router.get('/event', function(req, res){
       });
     });
 
-router.post('/event',/*ctrl_users.verify_token,*/ (req, res) => {
+router.post('/event',ctrl_users.verify_token(),(req, res) => {
   let name = req.body.name;
   let room = req.body.room;
   let speaker= req.body.speaker;
@@ -39,10 +39,10 @@ router.post('/event',/*ctrl_users.verify_token,*/ (req, res) => {
   let hour = req.body.hour;
   let description = req.body.description;
   let pplLimit = req.body.ppLimit;
-  let pplRegistered = req.body.pplRegistered;
-  let participants = req.body.participants;
+  let pplRegistered = 0;
+  let participants = [];
 
-//req.checkBody('name', 'Name is required').notEmpty();
+
   req.checkBody('name').notEmpty();
   req.checkBody('room').optional();;
   req.checkBody('speaker').optional();
@@ -51,8 +51,6 @@ router.post('/event',/*ctrl_users.verify_token,*/ (req, res) => {
   req.checkBody('hour').notEmpty();
   req.checkBody('description').notEmpty();
   req.checkBody('ppLimit').toInt().notEmpty();
-  req.checkBody('pplRegistered').toInt().notEmpty();
-  req.checkBody('participants').optional();
 
   let errors = req.validationErrors();
   if (errors){
