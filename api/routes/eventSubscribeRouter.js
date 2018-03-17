@@ -9,9 +9,11 @@ const kzwEventModel = require('../models/kzwEvent');
 const Event = mongoose.model('kzwEvent');
 const tokenController = require('../controllers/tokenController');
 
-router.get('/getAllparticipants/:EventId', function(req, res){
+
+// gets the list of participants signed into a particular event
+router.get('/event/:EventID', function(req, res){
   var id=req.params.EventId;
-  console.log('GET the EventId', id);
+  console.log('GET the EventID', id);
   Event
        .findById(id)
        .select('participants')
@@ -22,18 +24,17 @@ router.get('/getAllparticipants/:EventId', function(req, res){
                .status(500)
                .json(err);
           } else {
-            console.log('Returned socks', doc)
                 res
                   .status(200)
                   .json(doc);
               }});
 });
 
-//adds a user to the array of participants of a particular event
-router.post('/event_subscribe/:eventID/:userID', function(req, res){
 
-  const eventID = req.params.eventID;
-  const userID = req.params.userID;
+//adds a user to the array of participants of a particular event
+router.post('/event/:eventID/:userID', function(req, res){
+  var eventID = req.params.eventID;
+  var userID = req.params.userID;
   User
      .findById(userID)
      .exec(function(err, user){
@@ -74,33 +75,33 @@ router.post('/event_subscribe/:eventID/:userID', function(req, res){
     })
 });
 
-//issue #20 possibility to resign from a particular event
-    router.delete('/event_subscribe/:eventId/participant/:userId', function(req, res){
-      var eventId = req.params.eventId;
-      var userId = req.params.userId;
-      var UserID;
-      console.log('GET the eventId ', eventId);
-      console.log(userId);
-      Event
-           .findById(req.params.eventId)
-           .select()
-            .exec( function(err, ev){
-                if(err) {
-                console.log("Error finding event 500");
-                console.log(err);
-                res.status(500).json({success:false, error:err});
-              }
-              else if (!ev) {
-                console.log("Error finding event 404");
-                res.status(404).json({success:false, message: "Event ID is not found in database "});
-              }
+
+//removes the user from the event
+router.delete('/event/:eventID/:userID', function(req, res){
+    var eventID = req.params.eventID;
+    var userID = req.params.userID;
+    console.log('GET the eventID ', eventID);
+    console.log(userID);
+    Event
+      .findById(req.params.eventID)
+      .select()
+      .exec( function(err, ev){
+          if(err) {
+          console.log("Error finding event 500");
+          console.log(err);
+          res.status(500).json({success:false, error:err});
+          }
+             else if (!ev) {
+             console.log("Error finding event 404");
+             res.status(404).json({success:false, message: "Event ID is not found in database "});
+          }
               if (ev){
-                UserID = ev.participants.id(userId);
-                if(!UserID){
-                  res.status(404).json({success:false, message: "UserID is not found in database "});
-                }  else{
-                  ev.participants.id(userId).remove();
-                  ev.save(function(err, userUpdated){
+                 UserID = ev.participants.id(userID);
+                 if(!UserID){
+                    res.status(404).json({success:false, message: "UserID is not found in database "});
+                 } else{
+                    ev.participants.id(userID).remove();
+                    ev.save(function(err, userUpdated){
                     if(err){
                       res.status(500).json({success:false, error:err});
                     } else {
@@ -111,4 +112,5 @@ router.post('/event_subscribe/:eventID/:userID', function(req, res){
               }
               });
         });
+        
 module.exports=router;
