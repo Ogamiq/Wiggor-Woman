@@ -30,7 +30,7 @@ router.get('/event', function(req, res){
       });
     });
 
-router.post('/event',/*ctrl_users.verify_token,*/(req, res) => {
+router.post('/event',ctrl_users.verify_token(),(req, res) => {
   let name = req.body.name;
   let room = req.body.room;
   let speaker= req.body.speaker;
