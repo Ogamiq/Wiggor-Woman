@@ -4,10 +4,10 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 const bcrypt = require ('bcryptjs');
 const mongoose = require('mongoose');
-var Event = require('../models/kzw_event');
-var Event = mongoose.model('kzw_events');
+var Event = require('../models/kzwEvent');
+var Event = mongoose.model('kzwEvent');
 const jwt = require('jsonwebtoken');
-const ctrl_users = require('../controllers/ctrl_users');
+
 
 //returns all of the events.
 router.get('/event', function(req, res){
@@ -30,7 +30,7 @@ router.get('/event', function(req, res){
       });
     });
 
-router.post('/event',ctrl_users.verify_token(),(req, res) => {
+router.post('/event',(req, res) => {
   let name = req.body.name;
   let room = req.body.room;
   let speaker= req.body.speaker;

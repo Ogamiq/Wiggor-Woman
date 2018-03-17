@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const UserSchema = require('./user.js');
 const kzwEventSchema = new Schema({
-  //issue  update the kzw_event model to match the real events. Change every field except description to be requried.
+
   name:{
     type: String,
     required: true
@@ -39,6 +39,6 @@ const kzwEventSchema = new Schema({
   participants: [UserSchema]
 });
 
-const kzw_event = mongoose.model('kzw_events',kzwEventSchema, 'kzw_events');
+const kzwEvent = mongoose.model('kzwEvent',kzwEventSchema, 'kzwEvent');
 
-module.exports = kzw_event;
+module.exports = kzwEvent;

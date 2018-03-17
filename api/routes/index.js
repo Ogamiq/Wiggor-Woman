@@ -30,7 +30,7 @@ router.post('/login', function(req, res){
       if (bcrypt.compareSync(password, user.password)){
         jwt.sign({ id: user._id, name: user.name }, CONFIG.HASH_PASSWORD_SECRET, { expiresIn: '900000s' },  (err, token) => {
         res.status(200)
-          .json({token})
+          .json({token},{user})
           console.log(token);
         });
     }
@@ -44,7 +44,7 @@ router.post('/login', function(req, res){
  }
 });
 });
-// #19 disallow user to register more than once using the same email.
+
 router.post('/register', function(req, res){
   var name = req.body.name;
   var surname = req.body.surname;
@@ -81,8 +81,8 @@ router.post('/register', function(req, res){
     }
      if(user) {
        console.log(user);
-       res.status(404)
-       .json('You have already been registered!');
+       res.status(200)
+       .json('The with that email is already registered!');
   } if (!user){
     bcrypt.genSalt(10, function(err, salt){
       bcrypt.hash(password, salt, function(error, hash){
@@ -115,7 +115,7 @@ router.post('/register', function(req, res){
   }
 });
 
-router.put('/register', function(req,res){
+router.put('/register/:email', function(req,res){
 
     const email=req.body.email;
     const isAdmin=req.body.isAdmin;

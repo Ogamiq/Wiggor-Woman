@@ -5,9 +5,9 @@ const router = express.Router();
 const mongoose = require('mongoose');
 var User = require('../models/user');
 var User = mongoose.model('User');
-var Event = require('../models/kzw_event');
-var Event = mongoose.model('kzw_events');
-const ctrl_users = require('../controllers/ctrl_users');
+var Event = require('../models/kzwEvent');
+var Event = mongoose.model('kzwEvent');
+const userController = require('../controllers/userController');
 
 router.get('/getAllparticipants/:EventId', function(req, res){
   var id=req.params.EventId;

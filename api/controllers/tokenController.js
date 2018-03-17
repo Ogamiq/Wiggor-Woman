@@ -7,7 +7,7 @@ const CONFIG = require('../data/config.js');
 
 //Checks if the token exists in a header authorization and verifies it
 //Calls next middleware if the token is correct, if not sends status forbidden.
-module.exports.verify_token = (req,res,next) => {
+//module.exports.authenticateUser = (req,res,next) => {
   // // Get auth header value
   // const bearerHeader = req.headers['Authorization'];
   // // Check if bearer is undefined
@@ -18,11 +18,11 @@ module.exports.verify_token = (req,res,next) => {
   //   const bearerToken = bearer[1];
   //   // Set the token
   //   req.token = bearerToken;
-    console.log("at least entered this function");
-    console.log(req);
-    console.log(res);
-    next();
-
+    // console.log("at least entered this function");
+    // console.log(req);
+    // console.log(res);
+    // next();
+    //
 
   //   try {
   //     const decoded = jwt.verify(req.token, CONFIG.HASH_PASSWORD_SECRET);
@@ -36,4 +36,4 @@ module.exports.verify_token = (req,res,next) => {
   //   // Forbidden
   //   res.sendStatus(403);
   // }
-};
+//};
