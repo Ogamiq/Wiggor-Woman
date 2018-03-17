@@ -3,10 +3,10 @@ const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
 const router = express.Router();
 const mongoose = require('mongoose');
-var User = require('../models/user');
-var User = mongoose.model('User');
-var Event = require('../models/kzwEvent');
-var Event = mongoose.model('kzwEvent');
+const userModel = require('../models/user');
+const User = mongoose.model('User');
+const kzwEventModel = require('../models/kzwEvent');
+const Event = mongoose.model('kzwEvent');
 const tokenController = require('../controllers/tokenController');
 
 router.get('/getAllparticipants/:EventId', function(req, res){

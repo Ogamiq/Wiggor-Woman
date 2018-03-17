@@ -4,8 +4,8 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 const bcrypt = require ('bcryptjs');
 const mongoose = require('mongoose');
-var Event = require('../models/kzwEvent');
-var Event = mongoose.model('kzwEvent');
+const eventModel = require('../models/kzwEvent');
+const Event = mongoose.model('kzwEvent');
 const jwt = require('jsonwebtoken');
 
 
