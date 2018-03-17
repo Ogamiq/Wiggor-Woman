@@ -7,7 +7,7 @@ var User = require('../models/user');
 var User = mongoose.model('User');
 var Event = require('../models/kzwEvent');
 var Event = mongoose.model('kzwEvent');
-const userController = require('../controllers/userController');
+const tokenController = require('../controllers/tokenController');
 
 router.get('/getAllparticipants/:EventId', function(req, res){
   var id=req.params.EventId;
