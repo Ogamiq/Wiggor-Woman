@@ -51,7 +51,7 @@ router.post('/event/:eventID/:userID', function(req, res){
               res.status(400).json("couldn't find the event by its id");
             }
              if (event && !event.participants.find((element) => element.name===user.name)){
-                 event.participants.push({
+            event.participants.push({
                     name: user.name,
                     surname:user.surname,
                     university:user.university,
@@ -59,6 +59,18 @@ router.post('/event/:eventID/:userID', function(req, res){
                     email:user.email,
                     password:user.password
                });
+
+            User.findByIdAndUpdate({_id:userID}, {
+              $addToSet:{
+                "events":eventID
+              }
+            }, (err, result)=>{
+              if(err){
+                console.log(err);
+              }else {
+                console.log(result);
+              }
+            });
             event.save((err, evUpdated)=>{
               if(err){
                 console.log(err);
@@ -67,7 +79,8 @@ router.post('/event/:eventID/:userID', function(req, res){
                 res.status(200).json(evUpdated.participants[evUpdated.participants.length-1]);
               }
             });
-            }else {
+          }
+              else  {
               res.status(404).json('You have been already signed for this event!');
             }
           });
@@ -112,5 +125,5 @@ router.delete('/event/:eventID/:userID', function(req, res){
               }
               });
         });
-        
+
 module.exports=router;
