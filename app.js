@@ -11,6 +11,8 @@ const tokenController = require('./api/controllers/tokenController');
 const routesLoginRegister = require('./api/routes/');
 const routesCRUDevent = require('./api/routes/eventRouter');
 const routesSubscribeEvent = require('./api/routes/eventSubscribeRouter');
+const routesUserPanelRouther = require('./api/routes/userPanelRouther');
+
 app.use(bodyParser.json())
 
 app.use(expressValidator());
@@ -20,6 +22,8 @@ app.use('/', express.static(__dirname + '/public'));
 app.use('/api', routesLoginRegister);
 app.use('/api', routesCRUDevent);
 app.use('/api', routesSubscribeEvent);
+app.use('/api', routesUserPanelRouther);
+
 
 databaseController.connectWithTheDatabase();
 
