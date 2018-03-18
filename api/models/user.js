@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
+var Schema = mongoose.Schema,
+    ObjectId = Schema.ObjectId;
 
-const UserSchema = mongoose.Schema({
+const UserSchema = new Schema({
   name:{
     type: String,
     required: true,
@@ -29,7 +31,10 @@ const UserSchema = mongoose.Schema({
   isAdmin:{
     type:Boolean,
     default:false
-  }});
+  },
+  events: [Schema.Types.ObjectId]
+});
+
 
 const User = module.exports = mongoose.model('User', UserSchema, 'User');
-module.exports=UserSchema;
+ module.exports=UserSchema;
