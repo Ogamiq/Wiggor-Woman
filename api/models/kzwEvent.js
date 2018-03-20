@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const UserSchema = require('./user.js');
-const kzwEventSchema = new Schema({
+var Schema = mongoose.Schema,
+    ObjectId = Schema.ObjectId;
 
+const kzwEventSchema = new Schema({
   name:{
     type: String,
     required: true
@@ -30,13 +30,11 @@ const kzwEventSchema = new Schema({
   description:String,
   pplLimit: {
     type: Number,
-    //required: true
   },
   pplRegistered: {
-    type:Number,
-    //required:true
+    type: Number,
   },
-  participants: [UserSchema]
+  userIDs: [Schema.Types.ObjectId]
 });
 
 const kzwEvent = mongoose.model('kzwEvent',kzwEventSchema, 'kzwEvent');

@@ -9,7 +9,7 @@ const Event = mongoose.model('kzwEvent');
 const jwt = require('jsonwebtoken');
 
 
-//returns all of the events.
+//gets the list of all of the events
 router.get('/event', function(req, res){
   Event
        .find()
@@ -17,19 +17,18 @@ router.get('/event', function(req, res){
        .exec(function(err, events){
          if(err){
          console.log("Error finding");
-         res
-            .status(500)
-            .json(err);
+         res.status(500).json(err);
        }
        else{
         console.log("Found events", events.length);
         res
-          .status(500)
+          .status(200)
           .json(events);
         };
       });
     });
 
+//creates a new event
 router.post('/event',(req, res) => {
   let name = req.body.name;
   let room = req.body.room;
@@ -41,7 +40,6 @@ router.post('/event',(req, res) => {
   let pplLimit = req.body.ppLimit;
   let pplRegistered = 0;
   let participants = [];
-
 
   req.checkBody('name').notEmpty();
   req.checkBody('room').optional();;
@@ -72,13 +70,13 @@ router.post('/event',(req, res) => {
   });
   newEvent.save((err, result) => {
     console.log(result);
-    res.status(200)
-       .json({success:true, result})
+    res.status(200).json({success:true, result})
   })
 }
 });
 
-router.put('/event/:id',/*ctrl_users.verify_token, */function(req, res){
+//modifies an event
+router.put('/event/:id',function(req, res){
   const id = req.params.id;
   req.checkBody('name').optional();
   req.checkBody('room').optional();;
@@ -87,7 +85,7 @@ router.put('/event/:id',/*ctrl_users.verify_token, */function(req, res){
   req.checkBody('date').optional();
   req.checkBody('hour').optional();
   req.checkBody('description').optional();
-  req.checkBody('ppLimit').toInt().optional(); //do not use mental shortcuts peopleLimit
+  req.checkBody('ppLimit').toInt().optional();
   req.checkBody('pplRegistered').toInt().optional();
   req.checkBody('participants').optional();
 
@@ -96,7 +94,7 @@ router.put('/event/:id',/*ctrl_users.verify_token, */function(req, res){
     console.log(errors);
     res.status(500)
       .json(errors);
-  } else { //here I will create new object with optional fields,,,, hmm this situation you can solve in many ways, I will show you 1:)
+  } else {
 
     let fieldsToChange = {};
     if(req.body.name) fieldsToChange.name = req.body.name;
@@ -116,29 +114,28 @@ router.put('/event/:id',/*ctrl_users.verify_token, */function(req, res){
       if(err) {
         res.status(400).json({ success: false, error: err})
       } else {
-        res.status(200).json({ success: true, result})
+        res.status(200).json({ success: true, message: "event sucessfully updated"})
       }
     })
   }
 });
 
-router.delete('/event/:EventId', (req, res) => {
-  const id = req.params.EventId;
-  console.log(id);
+//deletes an event
+router.delete('/event/:eventID', (req, res) => {
+  const id = req.params.eventID;
+
   Event
       .findByIdAndRemove(id)
       .exec(function(err, EvenT){
         if (err){
           console.log("Event was not found");
-          res.status(404)
-             .json(err);
+          res.status(404).json(err);
         }
         else{
-          console.log("Event to delete was found", id);
-          res.status(204)
-            .json({success:true, EvenT});
+          console.log("Event was found and removed", id);
+          res.status(200).json({success:true, message:"event deleted"});
         }
       });
-  });
+});
 
 module.exports = router;

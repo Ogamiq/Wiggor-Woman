@@ -36,8 +36,7 @@ router.post('/login', function(req, res){
     }
     else {
      console.log('You are not registered');
-     res.status(401)
-       .json('Unauthorized');
+     res.status(401).json({sucess: false, message: 'user is not authorised'});
    }
  } else {
    res.json({success: false, message: 'user doesnt exist'})
@@ -76,13 +75,11 @@ router.post('/register', function(req, res){
   }).exec(function(err, user){
     if (err){
       console.log(err);
-      res.status(400)
-        .json('You are not registered!');
+      res.status(400).json('You are not registered!');
     }
      if(user) {
        console.log(user);
-       res.status(200)
-       .json('The with that email is already registered!');
+       res.status(200).json('The with that email is already registered!');
   } if (!user){
     bcrypt.genSalt(10, function(err, salt){
       bcrypt.hash(password, salt, function(error, hash){
@@ -102,8 +99,7 @@ router.post('/register', function(req, res){
               console.log(err);
               return;
             } else {
-              res
-                 .json(result)
+              res.json(result)
                  //TODO: redirect to the login view when it's made.
                  //.redirect('../public/login.html');
           }
@@ -116,10 +112,9 @@ router.post('/register', function(req, res){
 });
 
 router.put('/register/:email', function(req,res){
-
-    const email=req.body.email;
+    const email=req.params.email;
     const isAdmin=req.body.isAdmin;
-    console.log(isAdmin);
+
     User.findOneAndUpdate({
       email:email
     }, {
@@ -130,7 +125,7 @@ router.put('/register/:email', function(req,res){
       if(err) {
         res.status(400).json({ success: false, error: err})
       } else {
-        res.status(200).json({ success: true, result})
+        res.status(200).json({ success: true, message: "changed the isAdmin field"})
       }
     })
   });

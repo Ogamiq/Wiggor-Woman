@@ -32,7 +32,7 @@ const UserSchema = new Schema({
     type:Boolean,
     default:false
   },
-  events: [Schema.Types.ObjectId]
+  eventIDs: [Schema.Types.ObjectId]
 });
 
 
