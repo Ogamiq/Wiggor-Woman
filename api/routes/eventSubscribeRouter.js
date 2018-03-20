@@ -25,6 +25,19 @@ router.get('/event/:EventID', function(req, res){
     }});
 });
 
+function is_user(array, id){
+  var flag=false;
+  var i=0;
+  while(i<=array.length){
+    if(String(array[i])===String(id)){
+      flag=true;
+      break;
+    }else {
+      i++;
+       }
+    }
+return flag;
+}
 
 //user subscribes to the event
 router.post('/event/:eventID/:userID', function(req, res){
@@ -38,6 +51,7 @@ router.post('/event/:eventID/:userID', function(req, res){
          res.status(400).json("couldn't find the user by its id");
        }
       else{
+        console.log(user._id);
         Event
            .findById(eventID)
            .exec(function(err, event){
@@ -47,7 +61,9 @@ router.post('/event/:eventID/:userID', function(req, res){
             }
 
             //updates the ids in the arrays inside both objects
-            if(event && !event.userIDs.find((element) => element ===user._id)){
+            //TODO: update this condition using the function from cortroller, rename is_user function and move it to controller
+            //remember about the negation statement
+            if(event && !is_user(event.userIDs, user._id)){
             User.findByIdAndUpdate({_id:userID}, {
               $addToSet:{
                 "eventIDs":eventID
@@ -103,7 +119,8 @@ router.delete('/event/:eventID/:userID', function(req, res){
             }
 
             //updates the ids in the arrays inside both objects
-            if(event /*&& event.userIDs.find((element) => element ===user._id) */){
+            //TODO: update this condition using the function from cortroller, rename is_user function and move it to controller
+            if(event && is_user(event.userIDs, user._id)){
             User.findByIdAndUpdate({_id:userID}, {
               $pull:{
                 "eventIDs":eventID
