@@ -6,7 +6,6 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const expressValidator = require('express-validator');
 const databaseController = require('./api/controllers/databaseController');
-const tokenController = require('./api/controllers/tokenController');
 
 const routesLoginRegister = require('./api/routes/');
 const routesCRUDevent = require('./api/routes/eventRouter');

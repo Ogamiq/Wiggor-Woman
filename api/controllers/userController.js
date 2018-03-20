@@ -5,6 +5,35 @@ var User = require('../models/user');
 var User = mongoose.model('User');
 const CONFIG = require('../data/config.js');
 
+module.exports.isSubscribing = (array, id) => {
+  var flag=false;
+  var i=0;
+  while(i<=array.length){
+    if(String(array[i])===String(id)){
+      flag=true;
+      break;
+    }else {
+      i++;
+       }
+    }
+return flag;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //Checks if the token exists in a header authorization and verifies it
 //Calls next middleware if the token is correct, if not sends status forbidden.
 //module.exports.authenticateUser = (req,res,next) => {
