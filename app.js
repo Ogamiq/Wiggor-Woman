@@ -5,6 +5,7 @@ const path = require('path');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const expressValidator = require('express-validator');
+const cors = require('cors');
 const databaseController = require('./api/controllers/databaseController');
 
 const routesLoginRegister = require('./api/routes/');
@@ -12,7 +13,8 @@ const routesCRUDevent = require('./api/routes/eventRouter');
 const routesSubscribeEvent = require('./api/routes/eventSubscribeRouter');
 const routesUserPanel = require('./api/routes/userPanelRouter');
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(cors);
 
 app.use(expressValidator());
 app.use('/', express.static(__dirname + '/public'));

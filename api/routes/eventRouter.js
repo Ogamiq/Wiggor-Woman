@@ -21,9 +21,7 @@ router.get('/event', function(req, res){
        }
        else{
         console.log("Found events", events.length);
-        res
-          .status(200)
-          .json(events);
+        res.status(200).json(events);
         };
       });
     });

@@ -11,7 +11,6 @@ const userController = require('../controllers/userController');
 
 
 // gets the list of userIDs that are in the array userIDs in the particular event
-//TODO: improve this endpoint to get not the list of id's of evetns but the list of actuall events.
 router.get('/event/:EventID', function(req, res){
   var id=req.params.eventID;
   Event
@@ -47,8 +46,6 @@ router.post('/event/:eventID/:userID', function(req, res){
             }
 
             //updates the ids in the arrays inside both objects
-            //TODO: update this condition using the function from cortroller, rename is_user function and move it to controller
-            //remember about the negation statement
             if(event && !userController.isSubscribing(event.userIDs, user._id)){
             User.findByIdAndUpdate({_id:userID}, {
               $addToSet:{
@@ -81,7 +78,7 @@ router.post('/event/:eventID/:userID', function(req, res){
 });
 
 
-//removes the userID form the array in
+//user unsubsribes from the event
 router.delete('/event/:eventID/:userID', function(req, res){
   var eventID = req.params.eventID;
   var userID = req.params.userID;
@@ -105,7 +102,6 @@ router.delete('/event/:eventID/:userID', function(req, res){
             }
 
             //updates the ids in the arrays inside both objects
-            //TODO: update this condition using the function from cortroller, rename is_user function and move it to controller
             if(event && userController.isSubscribing(event.userIDs, user._id)){
             User.findByIdAndUpdate({_id:userID}, {
               $pull:{

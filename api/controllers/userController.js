@@ -19,21 +19,6 @@ module.exports.isSubscribing = (array, id) => {
 return flag;
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //Checks if the token exists in a header authorization and verifies it
 //Calls next middleware if the token is correct, if not sends status forbidden.
 //module.exports.authenticateUser = (req,res,next) => {
