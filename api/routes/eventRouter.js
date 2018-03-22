@@ -1,3 +1,4 @@
+const {isAuthentic} = require("../controllers/userController");
 const express = require('express');
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
@@ -33,7 +34,7 @@ router.get('/event', function(req, res){
     });
 
 //creates a new event
-router.post('/event',(req, res) => {
+router.post('/event',isAuthentic,(req, res) => {
   let name = req.body.name;
   let room = req.body.room;
   let speaker= req.body.speaker;
@@ -80,7 +81,7 @@ router.post('/event',(req, res) => {
 });
 
 //modifies an event
-router.put('/event/:id',function(req, res){
+router.put('/event/:id',isAuthentic,function(req, res){
   const id = req.params.id;
   req.checkBody('name').optional();
   req.checkBody('room').optional();;
@@ -125,7 +126,7 @@ router.put('/event/:id',function(req, res){
 });
 
 //deletes an event
-router.delete('/event/:eventID', (req, res) => {
+router.delete('/event/:eventID', isAuthentic, (req, res) => {
   const id = req.params.eventID;
 
   Event

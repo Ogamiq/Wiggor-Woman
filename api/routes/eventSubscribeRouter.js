@@ -8,6 +8,7 @@ const User = mongoose.model('User');
 const kzwEventModel = require('../models/kzwEvent');
 const Event = mongoose.model('kzwEvent');
 const userController = require('../controllers/userController');
+const {isAuthentic} = require("../controllers/userController");
 
 
 // gets the list of userIDs that are in the array userIDs in the particular event
@@ -25,7 +26,7 @@ router.get('/event/:EventID', function(req, res){
 });
 
 //user subscribes to the event
-router.post('/event/:eventID/:userID', async (req, res) => {
+router.post('/event/:eventID/:userID', isAuthentic, async (req, res) => {
     try {
         var eventID = req.params.eventID;
         var userID = req.params.userID;
@@ -57,7 +58,7 @@ router.post('/event/:eventID/:userID', async (req, res) => {
 });
 
 //user resigns from the event
-router.delete('/event/:eventID/:userID', async (req, res) => {
+router.delete('/event/:eventID/:userID', isAuthentic, async (req, res) => {
     try {
         var eventID = req.params.eventID;
         var userID = req.params.userID;
@@ -86,4 +87,4 @@ router.delete('/event/:eventID/:userID', async (req, res) => {
     }
 });
 
-module.exports=router;
+module.exports = router;

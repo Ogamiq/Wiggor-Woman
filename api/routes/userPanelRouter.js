@@ -6,12 +6,11 @@ const mongoose = require('mongoose');
 const userModel = require('../models/user');
 const kzwEventModel = require('../models/kzwEvent');
 const User = mongoose.model('User');
+const {isAuthentic} = require("../controllers/userController");
 
 
 //based on the userID gets the array of  events ID's that this user in signed into
-//TODO: improve this endpoint to get not the list of id's of evetns but the list of actuall events.
-
-router.get('/user/:userID', function(req, res){
+router.get('/user/:userID', isAuthentic, (req, res) => {
   var userID = req.params.userID;
   console.log(userID)
     User.aggregate([
@@ -24,11 +23,6 @@ router.get('/user/:userID', function(req, res){
                     as: 'userEvents'
                 }
         },
-        // {$project:
-        //         {
-        //             "userEvents.room": 1
-        //         }
-        // }
     ], (err,result) => {
         res.json({result})
     })

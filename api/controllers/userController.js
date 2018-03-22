@@ -19,6 +19,33 @@ module.exports.isSubscribing = (array, id) => {
 return flag;
 };
 
+module.exports.isAuthentic = (req,res,next) => {
+    const bearerToken = req.headers['authorization'];
+    console.log(req.headers);
+    if (!bearerToken) res.json({success: false, message: "couldn't find the token in authorization"});
+    try {
+        const decoded = jwt.verify(bearerToken, CONFIG.HASH_PASSWORD_SECRET);
+        console.log(decoded);
+        console.log(decoded.id);
+        User
+            .findById(decoded.id)
+            .exec( function(err, user){
+                if (err) res.json({success:false, message: "error finding user"});
+                else if (!user) res.json({success:false, message:"user not found in the database"});
+                else next();
+            });
+    }
+    catch (err) {
+        res.sendStatus(403);
+    }
+};
+
+
+// module.exports.isAdmin = (req,res,next) => {
+//
+// };
+
+
 //Checks if the token exists in a header authorization and verifies it
 //Calls next middleware if the token is correct, if not sends status forbidden.
 //module.exports.authenticateUser = (req,res,next) => {
