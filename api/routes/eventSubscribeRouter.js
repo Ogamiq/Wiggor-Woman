@@ -25,112 +25,65 @@ router.get('/event/:EventID', function(req, res){
 });
 
 //user subscribes to the event
-router.post('/event/:eventID/:userID', function(req, res){
-  var eventID = req.params.eventID;
-  var userID = req.params.userID;
-  User
-    .findById(userID)
-    .exec(function(err, user){
-      if (err){
-         console.log(err);
-         res.status(400).json("couldn't find the user by its id");
-       }
-      else{
-        console.log(user._id);
-        Event
-           .findById(eventID)
-           .exec(function(err, event){
-            if (err){
-              console.log(err);
-              res.status(400).json("couldn't find the event by its id");
-            }
+router.post('/event/:eventID/:userID', async (req, res) => {
+    try {
+        var eventID = req.params.eventID;
+        var userID = req.params.userID;
 
-            //updates the ids in the arrays inside both objects
-            if(event && !userController.isSubscribing(event.userIDs, user._id)){
-            User.findByIdAndUpdate({_id:userID}, {
-              $addToSet:{
-                "eventIDs":eventID
-              }
-            }, (err, result)=>{
-              if(err){
-                console.log(err);
-              }
+        let user = await User.findById(userID);
+        let event = await Event.findById(eventID);
+        if(!user) res.json({success: false, message: "couldn't find the user by its id"});
+        if(!event) res.json({success: false, message: "couldn't find the event by its id"});
+
+        if((event.pplLimit - event.userIDs.length) <= 0) res.json({success: false, message: "there are no spots left"});
+
+        if(!userController.isSubscribing(event.userIDs, user._id)){
+            await User.findByIdAndUpdate(userID, {
+                $addToSet:{
+                    "eventIDs": new mongoose.mongo.ObjectId(eventID)
+                }
             });
 
-            Event.findByIdAndUpdate({_id:eventID}, {
-              $addToSet:{
-                "userIDs":userID
-              }
-            }, (err, result)=>{
-              if(err){
-                console.log(err);
-              }else {
-                res.status(200).json({sucess:true, message:"user has sucessfully subscribed into the event"});
-              }
+            await Event.findByIdAndUpdate(eventID, {
+                $addToSet:{
+                    "userIDs": new mongoose.mongo.ObjectId(userID)
+                }
             });
-          }
-            else {
-              res.status(404).json('the user is already signed into this event');
-            }
-        });
+            res.json({success: true});
+        } else res.json({success: false, message: "the user is already signed into this event"});
+    } catch (err) {
+        res.json({success: false, message: "promise err"});
     }
-  });
 });
 
+//user resigns from the event
+router.delete('/event/:eventID/:userID', async (req, res) => {
+    try {
+        var eventID = req.params.eventID;
+        var userID = req.params.userID;
 
-//user unsubsribes from the event
-router.delete('/event/:eventID/:userID', function(req, res){
-  var eventID = req.params.eventID;
-  var userID = req.params.userID;
-  User
-    .findById(userID)
-    .exec(function(err, user){
-      if (err){
-         console.log(err);
-         res.status(400).json("couldn't find the user by its id");
-       }
-      else{
+        let user = await User.findById(userID);
+        let event = await Event.findById(eventID);
+        if(!user) res.json({success: false, message: "couldn't find the user by its id"});
+        if(!event) res.json({success: false, message: "couldn't find the event by its id"});
 
-        console.log(user._id);
-
-        Event
-           .findById(eventID)
-           .exec(function(err, event){
-            if (err){
-              console.log(err);
-              res.status(400).json("couldn't find the event by its id");
-            }
-
-            //updates the ids in the arrays inside both objects
-            if(event && userController.isSubscribing(event.userIDs, user._id)){
-            User.findByIdAndUpdate({_id:userID}, {
-              $pull:{
-                "eventIDs":eventID
-              }
-            }, (err, result)=>{
-              if(err){
-                console.log(err);
-              }
+        if(userController.isSubscribing(event.userIDs, user._id)){
+            await User.findByIdAndUpdate(userID, {
+                $pull:{
+                    "eventIDs": eventID
+                }
             });
 
-            Event.findByIdAndUpdate({_id:eventID}, {
-              $pull:{
-                "userIDs":userID
-              }
-            }, (err, result)=>{
-              if(err){
-                console.log(err);
-              }else {
-                res.status(200).json({sucess:true, message:"user has sucessfully unsubscribed from the event"});
-              }
+            await Event.findByIdAndUpdate(eventID, {
+                $pull:{
+                    "userIDs": userID
+                }
             });
-          }
-              else {
-              res.status(404).json('the user has not been signed for this event before');
-            }
-        });
+            res.json({success: true});
+        } else res.json({success: false, message: "the user has not been signed into this event"});
+    } catch (err) {
+        res.json({success: false, message: "promise err"});
     }
-  });
 });
 
 module.exports=router;

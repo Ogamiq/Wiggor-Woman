@@ -4,9 +4,8 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 const mongoose = require('mongoose');
 const userModel = require('../models/user');
-const User = mongoose.model('User');
 const kzwEventModel = require('../models/kzwEvent');
-const Event = mongoose.model('kzwEvent');
+const User = mongoose.model('User');
 
 
 //based on the userID gets the array of  events ID's that this user in signed into
@@ -14,17 +13,25 @@ const Event = mongoose.model('kzwEvent');
 
 router.get('/user/:userID', function(req, res){
   var userID = req.params.userID;
-  Event
-    .findById(userID)
-    .select('eventIDs')
-    .exec( function(err, events){
-       if (err){
-          console.log(err);
-          res.status(500).json(err);
-          } else {
-          res.status(200).json(events);
-        }
-    });
+  console.log(userID)
+    User.aggregate([
+        {$match: {_id: new mongoose.mongo.ObjectId(userID)}},
+        {$lookup:
+                {
+                    from: 'kzwEvent',
+                    localField: 'eventIDs',
+                    foreignField: '_id',
+                    as: 'userEvents'
+                }
+        },
+        // {$project:
+        //         {
+        //             "userEvents.room": 1
+        //         }
+        // }
+    ], (err,result) => {
+        res.json({result})
+    })
 });
 
 module.exports = router;

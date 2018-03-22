@@ -14,7 +14,7 @@ const routesSubscribeEvent = require('./api/routes/eventSubscribeRouter');
 const routesUserPanel = require('./api/routes/userPanelRouter');
 
 app.use(bodyParser.json());
-app.use(cors);
+//app.use(cors);
 
 app.use(expressValidator());
 app.use('/', express.static(__dirname + '/public'));

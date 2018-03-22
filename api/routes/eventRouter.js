@@ -7,13 +7,14 @@ const mongoose = require('mongoose');
 const eventModel = require('../models/kzwEvent');
 const Event = mongoose.model('kzwEvent');
 const jwt = require('jsonwebtoken');
+const R = require('ramda');
 
 
 //gets the list of all of the events
 router.get('/event', function(req, res){
   Event
-       .find()
-       .select("-_id, -__v")
+       .find({},{_id: 0, __v: 0})
+      .lean()
        .exec(function(err, events){
          if(err){
          console.log("Error finding");
@@ -21,6 +22,11 @@ router.get('/event', function(req, res){
        }
        else{
         console.log("Found events", events.length);
+        events = R.map(e => {
+          let leftSpots = e.pplLimit - e.userIDs.length;
+          e.leftSpots = leftSpots;
+          return e;
+        })(events)
         res.status(200).json(events);
         };
       });

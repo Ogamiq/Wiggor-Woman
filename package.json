@@ -13,6 +13,7 @@
     "bcrypt": "^1.0.3",
     "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.4",
     "dependencies": "0.0.1",
     "express": "^4.16.2",
     "express-validator": "^5.0.3",
@@ -21,6 +22,7 @@
     "nodemon": "^1.14.12",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "pug": "^2.0.0-rc.4"
+    "pug": "^2.0.0-rc.4",
+    "ramda": "^0.25.0"
   }
 }
