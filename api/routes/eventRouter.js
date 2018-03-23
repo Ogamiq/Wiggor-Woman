@@ -1,4 +1,3 @@
-const {isAuthentic} = require("../controllers/userController");
 const express = require('express');
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
@@ -9,6 +8,8 @@ const eventModel = require('../models/kzwEvent');
 const Event = mongoose.model('kzwEvent');
 const jwt = require('jsonwebtoken');
 const R = require('ramda');
+const {isAuthentic} = require("../controllers/userController");
+const {isAdmin} = require("../controllers/userController");
 
 
 //gets the list of all of the events
@@ -34,7 +35,7 @@ router.get('/event', function(req, res){
     });
 
 //creates a new event
-router.post('/event',isAuthentic,(req, res) => {
+router.post('/event',isAuthentic, isAdmin, (req, res) => {
   let name = req.body.name;
   let room = req.body.room;
   let speaker= req.body.speaker;
@@ -43,7 +44,6 @@ router.post('/event',isAuthentic,(req, res) => {
   let hour = req.body.hour;
   let description = req.body.description;
   let pplLimit = req.body.pplLimit;
-
 
   req.checkBody('name').notEmpty();
   req.checkBody('room').optional();;
@@ -78,7 +78,7 @@ router.post('/event',isAuthentic,(req, res) => {
 });
 
 //modifies an event
-router.put('/event/:id',isAuthentic,function(req, res){
+router.put('/event/:id',isAuthentic, isAdmin, (req, res) => {
   const id = req.params.id;
   req.checkBody('name').optional();
   req.checkBody('room').optional();;
@@ -119,7 +119,7 @@ router.put('/event/:id',isAuthentic,function(req, res){
 });
 
 //deletes an event
-router.delete('/event/:eventID', isAuthentic, (req, res) => {
+router.delete('/event/:eventID', isAuthentic, isAdmin, (req, res) => {
   const id = req.params.eventID;
 
   Event
