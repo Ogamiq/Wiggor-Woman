@@ -14,7 +14,7 @@ const R = require('ramda');
 //gets the list of all of the events
 router.get('/event', function(req, res){
   Event
-       .find({},{_id: 0, __v: 0})
+       .find({},{__v: 0})
       .lean()
        .exec(function(err, events){
          if(err){
