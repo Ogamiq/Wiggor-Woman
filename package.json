@@ -1,6 +1,9 @@
 {
   "name": "KZW",
   "version": "1.0.0",
+  "babel":{
+    "plugins": ["transform-async-to-generator"]
+  },
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -10,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.6.0",
     "bcrypt": "^1.0.3",
     "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.4.3",
@@ -24,5 +28,8 @@
     "passport-local": "^1.0.0",
     "pug": "^2.0.0-rc.4",
     "ramda": "^0.25.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0"
   }
 }

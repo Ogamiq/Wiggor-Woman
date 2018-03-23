@@ -42,9 +42,8 @@ router.post('/event',isAuthentic,(req, res) => {
   let date = req.body.date;
   let hour = req.body.hour;
   let description = req.body.description;
-  let pplLimit = req.body.ppLimit;
-  let pplRegistered = 0;
-  let participants = [];
+  let pplLimit = req.body.pplLimit;
+
 
   req.checkBody('name').notEmpty();
   req.checkBody('room').optional();;
@@ -53,7 +52,7 @@ router.post('/event',isAuthentic,(req, res) => {
   req.checkBody('date').notEmpty();
   req.checkBody('hour').notEmpty();
   req.checkBody('description').notEmpty();
-  req.checkBody('ppLimit').toInt().notEmpty();
+  req.checkBody('pplLimit').toInt().notEmpty();
 
   let errors = req.validationErrors();
   if (errors){
@@ -69,9 +68,7 @@ router.post('/event',isAuthentic,(req, res) => {
     date,
     hour,
     description,
-    pplLimit,
-    pplRegistered,
-    participants,
+    pplLimit
   });
   newEvent.save((err, result) => {
     console.log(result);
@@ -90,9 +87,7 @@ router.put('/event/:id',isAuthentic,function(req, res){
   req.checkBody('date').optional();
   req.checkBody('hour').optional();
   req.checkBody('description').optional();
-  req.checkBody('ppLimit').toInt().optional();
-  req.checkBody('pplRegistered').toInt().optional();
-  req.checkBody('participants').optional();
+  req.checkBody('pplLimit').toInt().optional();
 
   let errors = req.validationErrors();
   if (errors){
@@ -110,8 +105,6 @@ router.put('/event/:id',isAuthentic,function(req, res){
     if(req.body.hour) fieldsToChange.hour = req.body.hour;
     if(req.body.description) fieldsToChange.description = req.body.description;
     if(req.body.pplLimit) fieldsToChange.pplLimit = req.body.pplLimit;
-    if(req.body.pplRegistered) fieldsToChange.pplRegistered = req.body.pplRegistered;
-    if(req.body.participants) fieldsToChange.participants - req.body.participants;
     console.log(fieldsToChange);
     Event.findByIdAndUpdate(id, {
       $set: fieldsToChange

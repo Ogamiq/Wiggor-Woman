@@ -9,7 +9,7 @@ const User = mongoose.model('User');
 const {isAuthentic} = require("../controllers/userController");
 
 
-//based on the userID gets the array of  events ID's that this user in signed into
+//based on the userID gets all of the objects that the user subscribes
 router.get('/user/:userID', isAuthentic, (req, res) => {
   var userID = req.params.userID;
   console.log(userID)

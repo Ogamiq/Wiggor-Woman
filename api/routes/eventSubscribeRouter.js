@@ -9,6 +9,7 @@ const kzwEventModel = require('../models/kzwEvent');
 const Event = mongoose.model('kzwEvent');
 const userController = require('../controllers/userController');
 const {isAuthentic} = require("../controllers/userController");
+const async = require('async');
 
 
 // gets the list of userIDs that are in the array userIDs in the particular event

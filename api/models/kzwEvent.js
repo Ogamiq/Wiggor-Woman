@@ -31,9 +31,6 @@ const kzwEventSchema = new Schema({
   pplLimit: {
     type: Number,
   },
-  pplRegistered: {
-    type: Number,
-  },
   userIDs: [Schema.Types.ObjectId]
 });
 

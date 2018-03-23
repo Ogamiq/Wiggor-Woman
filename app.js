@@ -13,6 +13,8 @@ const routesCRUDevent = require('./api/routes/eventRouter');
 const routesSubscribeEvent = require('./api/routes/eventSubscribeRouter');
 const routesUserPanel = require('./api/routes/userPanelRouter');
 const {isAuthentic} = require('./api/controllers/userController');
+const async = require('async');
+
 
 app.use(bodyParser.json());
 //app.use(cors);
