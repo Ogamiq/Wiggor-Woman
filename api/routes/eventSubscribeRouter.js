@@ -13,7 +13,7 @@ const async = require('async');
 
 
 // gets the list of userIDs that are in the array userIDs in the particular event
-router.get('/event/:EventID', function(req, res){
+router.get('/event/:eventID', function(req, res){
   var id=req.params.eventID;
   Event
     .findById(id)
