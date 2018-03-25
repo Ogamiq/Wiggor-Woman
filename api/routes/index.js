@@ -23,19 +23,16 @@ router.post('/login', function(req, res){
   }).exec(function(err, user){
     if (err){
       console.log(err);
-      res.status(400)
-        .json(err);
+      res.status(400).json(err);
     }
      if(user) {
       if (bcrypt.compareSync(password, user.password)){
         jwt.sign({ id: user._id, name: user.name }, CONFIG.HASH_PASSWORD_SECRET, { expiresIn: '900000s' },  (err, token) => {
         res.status(200)
           .json({user,token})
-          console.log(token);
         });
     }
     else {
-     console.log('You are not registered');
      res.status(401).json({sucess: false, message: 'user is not authorised'});
    }
  } else {
@@ -75,11 +72,10 @@ router.post('/register', function(req, res){
   }).exec(function(err, user){
     if (err){
       console.log(err);
-      res.status(400).json('You are not registered!');
+      res.status(400).json('error registering the user');
     }
      if(user) {
-       console.log(user);
-       res.status(200).json('The with that email is already registered!');
+       res.status(200).json('the user with that email is already registered');
   } if (!user){
     bcrypt.genSalt(10, function(err, salt){
       bcrypt.hash(password, salt, function(error, hash){

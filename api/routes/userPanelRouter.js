@@ -7,26 +7,34 @@ const userModel = require('../models/user');
 const kzwEventModel = require('../models/kzwEvent');
 const User = mongoose.model('User');
 const {isAuthentic} = require("../controllers/userController");
+const R = require('ramda');
 
 
 //based on the userID gets all of the events that the user subscribes
 router.get('/user/:userID', isAuthentic, (req, res) => {
-  var userID = req.params.userID;
-  console.log(userID)
-    User.aggregate([
-        {$match: {_id: new mongoose.mongo.ObjectId(userID)}},
-        {$lookup:
-                {
-                    from: 'kzwEvent',
-                    localField: 'eventIDs',
-                    foreignField: '_id',
-                    as: 'userEvents'
-                }
-        },
-    ], (err,result) => {
-        res.json({result})
-    })
+  let userID = req.params.userID;
+  User.aggregate([
+    {$match: {_id: new mongoose.mongo.ObjectId(userID)}},
+    {$lookup:
+      {
+        from: 'kzwEvent',
+        localField: 'eventIDs',
+        foreignField: '_id',
+        as: 'userEvents'
+      }
+    },
+    ],(err,result) => {
+
+      let userEvents = result[0].userEvents;
+      userEvents = R.map(e => {
+      let leftSpots = e.pplLimit - e.userIDs.length;
+      e.leftSpots = leftSpots;
+      return e;
+      })(userEvents)
+      res.status(200).json(userEvents);
+    });
 });
+
 
 //modify the user properties
 router.put('/user/:id', (req, res) => {
@@ -55,7 +63,6 @@ router.put('/user/:id', (req, res) => {
     if(req.body.hour) fieldsToChange.email = req.body.email;
     if(req.body.hour) fieldsToChange.isAdmin = req.body.isAdmin;
 
-    console.log(fieldsToChange);
     User.findByIdAndUpdate(id, {
       $set: fieldsToChange
     }, (err, result) => {

@@ -23,7 +23,6 @@ router.get('/event', function(req, res){
          res.status(500).json(err);
        }
        else{
-        console.log("Found events", events.length);
         events = R.map(e => {
           let leftSpots = e.pplLimit - e.userIDs.length;
           e.leftSpots = leftSpots;
@@ -71,7 +70,6 @@ router.post('/event',isAuthentic, isAdmin, (req, res) => {
     pplLimit
   });
   newEvent.save((err, result) => {
-    console.log(result);
     res.status(200).json({success:true, result})
   })
 }
@@ -92,8 +90,7 @@ router.put('/event/:id',isAuthentic, isAdmin, (req, res) => {
   let errors = req.validationErrors();
   if (errors){
     console.log(errors);
-    res.status(500)
-      .json(errors);
+    res.status(500).json(errors);
   } else {
 
     let fieldsToChange = {};
@@ -105,7 +102,7 @@ router.put('/event/:id',isAuthentic, isAdmin, (req, res) => {
     if(req.body.hour) fieldsToChange.hour = req.body.hour;
     if(req.body.description) fieldsToChange.description = req.body.description;
     if(req.body.pplLimit) fieldsToChange.pplLimit = req.body.pplLimit;
-    console.log(fieldsToChange);
+
     Event.findByIdAndUpdate(id, {
       $set: fieldsToChange
     }, (err, result) => {
@@ -130,7 +127,6 @@ router.delete('/event/:eventID', isAuthentic, isAdmin, (req, res) => {
           res.status(404).json(err);
         }
         else{
-          console.log("Event was found and removed", id);
           res.status(200).json({success:true, message:"event deleted"});
         }
       });
