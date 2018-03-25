@@ -33,10 +33,10 @@ router.post('/login', function(req, res){
         });
     }
     else {
-     res.status(401).json({sucess: false, message: 'user is not authorised'});
+     res.status(200).json({sucess: false, message: 'wrong data provided, cannot log in'});
    }
  } else {
-   res.json({success: false, message: 'user doesnt exist'})
+   res.status(200).json({success: false, message: "wrong data provided, cannot log in"})
  }
 });
 });

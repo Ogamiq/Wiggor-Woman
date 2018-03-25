@@ -37,7 +37,7 @@ router.get('/user/:userID', isAuthentic, (req, res) => {
 
 
 //modify the user properties
-router.put('/user/:id', (req, res) => {
+router.put('/user/:id', isAuthentic, (req, res) => {
   const id = req.params.id;
 
   req.checkBody('name').optional();
