@@ -1,0 +1,11 @@
+.Tooltip {
+    font-size: 18px !important;
+    max-width: 400px;
+}
+
+@media only screen and (max-width: 767px) {
+    .Tooltip {
+        font-size: 12px !important;
+        max-width: 250px;
+    }
+  }

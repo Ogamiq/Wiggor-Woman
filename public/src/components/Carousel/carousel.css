@@ -1,0 +1,53 @@
+.slick-slider {
+  margin-top: 57px;
+}
+
+.slick-prev, .slick-next {
+  z-index: 2;
+}
+
+.slick-prev {
+  left: 25px;
+}
+
+.slick-next {
+  right: 25px;
+}
+
+.slick-dots {
+  bottom: 2%;
+}
+
+.slick-dots li button:before {
+  width: 10px;
+  height: 10px;
+  line-height: 10px;
+  border-radius: 50%;
+  background-color: black;
+}
+
+.slick-dots li button:focus, .slick-dots li button:hover {
+  outline: none;
+}
+
+.carousel-arrow-prev,
+.carousel-arrow-next {
+  width: 40px;
+  height: 50px;
+  z-index: 2;
+  cursor: pointer;
+  fill: white;
+  stroke: white;
+  stroke-width: 3px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.carousel-arrow-prev {
+  left: 3%;
+}
+
+.carousel-arrow-next {
+  right: 3%;
+}
