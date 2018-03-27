@@ -6,7 +6,7 @@ export const REGISTER = 'register';
 export const EVENTS = 'events';
 export const USER_EVENTS = 'user_events';
 
-const ROOT_URL = 'http://localhost:3000/api';
+const ROOT_URL = 'http://kobietazwiggorem.pietruszka.usermd.net/api';
 
 export function login(values) {
   const loginRequest = axios.post(`${ROOT_URL}/login`, values);
@@ -49,7 +49,7 @@ export function getUserEvents(userId, token) {
       headers: {
         'Authorization': token
       }
-  });  
+  });
 
   return {
     type: USER_EVENTS,

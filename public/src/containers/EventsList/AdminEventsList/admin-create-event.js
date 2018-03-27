@@ -31,7 +31,7 @@ class AdminCreateEvent extends Component {
     onSubmit(values) {
       axios({
         method: 'POST',
-        url: `http://localhost:3000/api/event/`,
+        url: `http://kobietazwiggorem.pietruszka.usermd.net/api/event/`,
         data: values,
         headers: {
           'Authorization': this.props.loginData.token
