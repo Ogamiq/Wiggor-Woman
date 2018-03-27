@@ -56,7 +56,7 @@ class AdminEventsList extends Component {
 
           axios({
             method: 'PUT',
-            url: `http://localhost:3000/api/event/${id}`,
+            url: `http://kobietazwiggorem.pietruszka.usermd.net/api/event/${id}`,
             data: jsonResult,
             headers: {
               'Authorization': this.props.loginData.token
@@ -77,7 +77,7 @@ class AdminEventsList extends Component {
       let id = e.target.id;
       axios({
         method: 'DELETE',
-        url: `http://localhost:3000/api/event/${id}`,
+        url: `http://kobietazwiggorem.pietruszka.usermd.net/api/event/${id}`,
         headers: {
           'Authorization': this.props.loginData.token
         }

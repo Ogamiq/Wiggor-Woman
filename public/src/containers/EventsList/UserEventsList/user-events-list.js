@@ -55,7 +55,7 @@ class UserEventsList extends Component {
         checkedBoxes.forEach((event) => {
             axios({
                 method: 'DELETE',
-                url: `http://localhost:3000/api/event/${event.id}/${this.props.loginData.user._id}`,
+                url: `http://kobietazwiggorem.pietruszka.usermd.net/api/event/${event.id}/${this.props.loginData.user._id}`,
                 headers: {
                   'Authorization': this.props.loginData.token
                 }
