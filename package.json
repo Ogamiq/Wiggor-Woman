@@ -1,9 +1,6 @@
 {
   "name": "KZW",
   "version": "1.0.0",
-  "babel":{
-    "plugins": ["transform-async-to-generator"]
-  },
   "description": "",
   "main": "app.js",
   "scripts": {
