@@ -101,7 +101,7 @@ router.put('/event/:id',isAuthentic, isAdmin, (req, res) => {
     if(req.body.date) fieldsToChange.date = req.body.date;
     if(req.body.hour) fieldsToChange.hour = req.body.hour;
     if(req.body.description) fieldsToChange.description = req.body.description;
-    if(req.body.spots) fieldsToChange.pplLimit = req.body.spots;
+    if(req.body.spots) fieldsToChange.spots = req.body.spots;
 
     Event.findByIdAndUpdate(id, {
       $set: fieldsToChange
