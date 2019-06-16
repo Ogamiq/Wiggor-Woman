@@ -27,7 +27,7 @@ router.get('/user/:userID', isAuthentic, (req, res) => {
 
       let userEvents = result[0].userEvents;
       userEvents = R.map(e => {
-      let leftSpots = e.pplLimit - e.userIDs.length;
+      let leftSpots = e.spots - e.userIDs.length;
       e.leftSpots = leftSpots;
       return e;
       })(userEvents)
