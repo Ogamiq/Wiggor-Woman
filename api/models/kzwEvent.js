@@ -28,7 +28,7 @@ const kzwEventSchema = new Schema({
     required: true
   },
   description:String,
-  pplLimit: {
+  spots: {
     type: Number,
   },
   userIDs: [Schema.Types.ObjectId]
