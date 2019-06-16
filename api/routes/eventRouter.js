@@ -24,7 +24,7 @@ router.get('/event', function(req, res){
        }
        else{
         events = R.map(e => {
-          let leftSpots = e.pplLimit - e.userIDs.length;
+          let leftSpots = e.spots - e.userIDs.length;
           e.leftSpots = leftSpots;
           return e;
         })(events)
@@ -42,7 +42,7 @@ router.post('/event',isAuthentic, isAdmin, (req, res) => {
   let date = req.body.date;
   let hour = req.body.hour;
   let description = req.body.description;
-  let pplLimit = req.body.pplLimit;
+  let spots = req.body.spots;
 
   req.checkBody('name').notEmpty();
   req.checkBody('room').optional();;
@@ -51,7 +51,7 @@ router.post('/event',isAuthentic, isAdmin, (req, res) => {
   req.checkBody('date').notEmpty();
   req.checkBody('hour').notEmpty();
   req.checkBody('description').notEmpty();
-  req.checkBody('pplLimit').toInt().notEmpty();
+  req.checkBody('spots').toInt().notEmpty();
 
   let errors = req.validationErrors();
   if (errors){
@@ -67,7 +67,7 @@ router.post('/event',isAuthentic, isAdmin, (req, res) => {
     date,
     hour,
     description,
-    pplLimit
+    spots
   });
   newEvent.save((err, result) => {
     res.status(200).json({success:true, result})
@@ -85,7 +85,7 @@ router.put('/event/:id',isAuthentic, isAdmin, (req, res) => {
   req.checkBody('date').optional();
   req.checkBody('hour').optional();
   req.checkBody('description').optional();
-  req.checkBody('pplLimit').toInt().optional();
+  req.checkBody('spots').toInt().optional();
 
   let errors = req.validationErrors();
   if (errors){
@@ -101,7 +101,7 @@ router.put('/event/:id',isAuthentic, isAdmin, (req, res) => {
     if(req.body.date) fieldsToChange.date = req.body.date;
     if(req.body.hour) fieldsToChange.hour = req.body.hour;
     if(req.body.description) fieldsToChange.description = req.body.description;
-    if(req.body.pplLimit) fieldsToChange.pplLimit = req.body.pplLimit;
+    if(req.body.spots) fieldsToChange.pplLimit = req.body.spots;
 
     Event.findByIdAndUpdate(id, {
       $set: fieldsToChange
