@@ -37,7 +37,7 @@ router.post('/event/:eventID/:userID', isAuthentic, async (req, res) => {
         if(!user) res.json({success: false, message: "couldn't find the user by its id"});
         if(!event) res.json({success: false, message: "couldn't find the event by its id"});
 
-        if((event.pplLimit - event.userIDs.length) <= 0) res.json({success: false, message: "there are no spots left"});
+        if((event.spots - event.userIDs.length) <= 0) res.json({success: false, message: "there are no spots left"});
 
         if(!userController.isSubscribing(event.userIDs, user._id)){
             await User.findByIdAndUpdate(userID, {
